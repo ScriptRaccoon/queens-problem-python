@@ -1,7 +1,6 @@
 """Solution of the n queens problem"""
 
 from collections.abc import Iterator
-import sys
 
 
 def queens(n: int) -> Iterator[list[int]]:
@@ -80,16 +79,26 @@ def solution_as_string(solution: list[int]) -> str:
 
 def main() -> None:
     """Prints all solutions of the 8 queens problem and their amount"""
+    print("\nQueens problem")
     number_solutions = 0
-    if len(sys.argv) == 2 and sys.argv[1].isnumeric():
-        n = int(sys.argv[1])
-    else:
-        n = 8
-    print(f"\n{n} queens problem")
-    for solution in queens(n):
-        number_solutions += 1
-        print(solution_as_string(solution))
-    print(f"{number_solutions} solutions have been found")
+    while True:
+        size_input = input("\nInput the size of the board: ")
+        if size_input.isnumeric() and size_input != "0":
+            break
+        print("Invalid number")
+
+    n = int(size_input)
+    solutions = queens(n)
+    print("\nPress Enter to always create the next solution")
+    while True:
+        try:
+            solution = next(solutions)
+            number_solutions += 1
+            print(solution_as_string(solution))
+            input("")
+        except StopIteration:
+            print(f"{number_solutions} solutions have been found")
+            break
 
 
 if __name__ == "__main__":

@@ -1,11 +1,9 @@
-"""Solutions to the n queens problem with generators (quite fast)"""
-
-from collections.abc import Iterator
+"""Solutions to the n queens problem with lists (rather slow)"""
 
 
-def queens(n: int) -> Iterator[list[int]]:
+def queens(n: int) -> list[list[int]]:
     """
-    Generator yielding solutions of the n queens problem, where n is the size of the
+    List of all solutions of the n queens problem, where n is the size of the
     chess board (indexed by pairs of integers < n). A solution is a list of n integers
     [a_0,...,a_(n-1)] such that a queen can be placed in row i and column a_i for all i.
 
@@ -13,16 +11,16 @@ def queens(n: int) -> Iterator[list[int]]:
         n: size of the chess board
 
     Returns:
-        Generator yielding complete solutions of the n queens problem
+        List of complete solutions of the n queens problem
     """
     return partial_queens(n, 0, [], [], [])
 
 
 def partial_queens(
     n: int, row: int, columns: list[int], sums: list[int], diffs: list[int]
-) -> Iterator[list[int]]:
+) -> list[list[int]]:
     """
-    Generator yielding partial solutions of the n queens problem, where n is the size
+    List of partial solutions of the n queens problem, where n is the size
     of the chess board (indexed by pairs of integers < n). A solution is a list of n integers
     [a_0,...,a_(n-1)] such that a queen can be placed in row i and column a_i for all i.
     The solutions are built recursively up from previously placed queens.
@@ -42,19 +40,22 @@ def partial_queens(
         diffs: the list of all (row - col) of previous solutions
 
     Returns:
-        Generator yielding partial solutions of the n queens problem
+        List of all partial solutions of the n queens problem
     """
     if row < n:
+        solutions = []
         for col in range(n):
             valid_pos = (
                 col not in columns and row + col not in sums and row - col not in diffs
             )
             if valid_pos:
-                yield from partial_queens(
+                next_solutions = partial_queens(
                     n, row + 1, columns + [col], sums + [row + col], diffs + [row - col]
                 )
+                solutions += next_solutions
+        return solutions
     else:
-        yield columns
+        return [columns]
 
 
 def solution_as_string(solution: list[int]) -> str:
@@ -80,7 +81,6 @@ def solution_as_string(solution: list[int]) -> str:
 def main() -> None:
     """Prints all solutions of the n queens problem and their amount"""
     print("\nQueens problem")
-    number_solutions = 0
     while True:
         size_input = input("\nInput the size of the board: ")
         if size_input.isnumeric() and size_input != "0":
@@ -89,16 +89,13 @@ def main() -> None:
 
     n = int(size_input)
     solutions = queens(n)
-    print("\nPress Enter to always create the next solution")
-    while True:
-        try:
-            solution = next(solutions)
-            number_solutions += 1
-            print(solution_as_string(solution))
-            input("")
-        except StopIteration:
-            print(f"{number_solutions} solutions have been found")
-            break
+    print(f"\n{len(solutions)} solutions have been found")
+    if len(solutions) == 0:
+        return
+    print("\nPress Enter to always see the next solution")
+    for solution in solutions:
+        print(solution_as_string(solution))
+        input()
 
 
 if __name__ == "__main__":

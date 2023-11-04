@@ -1,4 +1,4 @@
-"""Solutions to the n queens problem with generators (quite fast)"""
+"""Solutions to the n queens problem with generators"""
 
 from collections.abc import Iterator
 

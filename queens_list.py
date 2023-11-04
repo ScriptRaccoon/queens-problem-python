@@ -1,4 +1,4 @@
-"""Solutions to the n queens problem with lists (rather slow)"""
+"""Solutions to the n queens problem with lists"""
 
 
 def queens(n: int) -> list[list[int]]:
@@ -56,47 +56,3 @@ def partial_queens(
         return solutions
     else:
         return [columns]
-
-
-def solution_as_string(solution: list[int]) -> str:
-    """
-    Prints a solution of the n queens problem in a nice way
-
-    Arguments:
-        solution: any list of column positions
-    """
-    n = len(solution)
-    output: str = " " + "_" * (2 * n - 1) + "\n"
-    for row in range(n):
-        output += "|"
-        for col in range(n):
-            output += "Q" if solution[row] == col else "*"
-            if col < n - 1:
-                output += " "
-        output += "|\n"
-    output += " " + chr(8254) * (2 * n - 1)
-    return output
-
-
-def main() -> None:
-    """Prints all solutions of the n queens problem and their amount"""
-    print("\nQueens problem")
-    while True:
-        size_input = input("\nInput the size of the board: ")
-        if size_input.isnumeric() and size_input != "0":
-            break
-        print("Invalid number")
-
-    n = int(size_input)
-    solutions = queens(n)
-    print(f"\n{len(solutions)} solutions have been found")
-    if len(solutions) == 0:
-        return
-    print("\nPress Enter to always see the next solution")
-    for solution in solutions:
-        print(solution_as_string(solution))
-        input()
-
-
-if __name__ == "__main__":
-    main()

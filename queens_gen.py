@@ -90,15 +90,11 @@ def main() -> None:
     n = int(size_input)
     solutions = queens(n)
     print("\nPress Enter to always create the next solution")
-    while True:
-        try:
-            solution = next(solutions)
-            number_solutions += 1
-            print(solution_as_string(solution))
-            input("")
-        except StopIteration:
-            print(f"{number_solutions} solutions have been found")
-            break
+    for solution in solutions:
+        number_solutions += 1
+        print(solution_as_string(solution))
+        input("")
+    print(f"{number_solutions} solutions have been found")
 
 
 if __name__ == "__main__":

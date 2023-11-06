@@ -42,17 +42,14 @@ def partial_queens(
     Returns:
         List of all partial solutions of the n queens problem
     """
-    if row < n:
-        solutions = []
-        for col in range(n):
-            valid_pos = (
-                col not in columns and row + col not in sums and row - col not in diffs
-            )
-            if valid_pos:
-                next_solutions = partial_queens(
-                    n, row + 1, columns + [col], sums + [row + col], diffs + [row - col]
-                )
-                solutions += next_solutions
-        return solutions
-    else:
+    if row == n:
         return [columns]
+    solutions = []
+    for col in range(n):
+        ok = col not in columns and row + col not in sums and row - col not in diffs
+        if ok:
+            next_solutions = partial_queens(
+                n, row + 1, columns + [col], sums + [row + col], diffs + [row - col]
+            )
+            solutions += next_solutions
+    return solutions

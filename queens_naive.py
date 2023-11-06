@@ -30,17 +30,16 @@ def partial_queens(n: int, row: int) -> list[list[tuple[int, int]]]:
     Returns:
         List of all partial solutions of the n queens problem
     """
-    if row >= 0:
-        solutions = []
-        previous_solutions = partial_queens(n, row - 1)
-        for solution in previous_solutions:
-            for col in range(n):
-                if all(
-                    y != col and row + col != x + y and row - col != x - y
-                    for [x, y] in solution
-                ):
-                    new_solution = solution + [(row, col)]
-                    solutions.append(new_solution)
-        return solutions
-    else:
+    if row < 0:
         return [[]]
+    solutions = []
+    previous_solutions = partial_queens(n, row - 1)
+    for solution in previous_solutions:
+        for col in range(n):
+            if all(
+                y != col and row + col != x + y and row - col != x - y
+                for [x, y] in solution
+            ):
+                new_solution = solution + [(row, col)]
+                solutions.append(new_solution)
+    return solutions

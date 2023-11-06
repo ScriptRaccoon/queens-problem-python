@@ -44,17 +44,14 @@ def partial_queens(
     Returns:
         Generator yielding partial solutions of the n queens problem
     """
-    if row < n:
-        for col in range(n):
-            valid_pos = (
-                col not in columns and row + col not in sums and row - col not in diffs
-            )
-            if valid_pos:
-                yield from partial_queens(
-                    n, row + 1, columns + [col], sums + [row + col], diffs + [row - col]
-                )
-    else:
+    if row == n:
         yield columns
+    for col in range(n):
+        ok = col not in columns and row + col not in sums and row - col not in diffs
+        if ok:
+            yield from partial_queens(
+                n, row + 1, columns + [col], sums + [row + col], diffs + [row - col]
+            )
 
 
 def solution_as_string(solution: list[int]) -> str:
